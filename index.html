@@ -129,56 +129,45 @@ html, body {
   function getPhoneBrandFromUserAgent() {
     const ua = navigator.userAgent.toLowerCase();
 
-    // Mobile brands first
-    if (/poco/.test(ua)) return "POCO";
-    if (/redmi/.test(ua)) return "Redmi";
-    if (/xiaomi|mi/.test(ua)) return "Xiaomi";
-    if (/samsung|sm-/.test(ua)) return "Samsung";
-    if (/huawei/.test(ua)) return "Huawei";
-    if (/honor/.test(ua)) return "Honor";
-    if (/oppo/.test(ua)) return "Oppo";
-    if (/realme/.test(ua)) return "Realme";
-    if (/vivo/.test(ua)) return "Vivo";
-    if (/oneplus/.test(ua)) return "OnePlus";
-    if (/iqoo/.test(ua)) return "iQOO";
-    if (/google|pixel/.test(ua)) return "Google Pixel";
-    if (/asus|zenfone/.test(ua)) return "ASUS";
-    if (/lenovo/.test(ua)) return "Lenovo";
-    if (/motorola|moto/.test(ua)) return "Motorola";
-    if (/nokia/.test(ua)) return "Nokia";
-    if (/infinix/.test(ua)) return "Infinix";
-    if (/tecno/.test(ua)) return "Tecno";
-    if (/itel/.test(ua)) return "Itel";
-    if (/sony/.test(ua)) return "Sony Xperia";
-    if (/lg-/.test(ua)) return "LG";
-    if (/meizu/.test(ua)) return "Meizu";
-    if (/zte/.test(ua)) return "ZTE";
-    if (/alcatel/.test(ua)) return "Alcatel";
-    if (/sharp/.test(ua)) return "Sharp";
-    if (/panasonic/.test(ua)) return "Panasonic";
-    if (/bq/.test(ua)) return "BQ";
-    if (/lava/.test(ua)) return "Lava";
-    if (/micromax/.test(ua)) return "Micromax";
-    if (/gionee/.test(ua)) return "Gionee";
-    if (/coolpad/.test(ua)) return "Coolpad";
-
     // Apple
     if (/iphone/.test(ua)) return "Apple iPhone";
     if (/ipad/.test(ua)) return "Apple iPad";
     if (/macintosh/.test(ua)) return "Apple Mac";
 
-    // Windows PCs
+    // Android (must come before Linux)
+    if (/android/.test(ua)) {
+      if (/poco/.test(ua) || /m2010j19/.test(ua)) return "POCO";
+      if (/redmi/.test(ua) || /m\d{4}[a-z]/.test(ua)) return "Redmi";
+      if (/mi/.test(ua)) return "Xiaomi";
+      if (/sm-/.test(ua)) return "Samsung";
+      if (/samsung/.test(ua)) return "Samsung";
+      if (/oneplus/.test(ua)) return "OnePlus";
+      if (/realme/.test(ua)) return "Realme";
+      if (/vivo/.test(ua)) return "Vivo";
+      if (/oppo/.test(ua)) return "Oppo";
+      if (/huawei/.test(ua)) return "Huawei";
+      if (/honor/.test(ua)) return "Honor";
+      if (/iqoo/.test(ua)) return "iQOO";
+      if (/pixel/.test(ua)) return "Google Pixel";
+      if (/motorola|moto/.test(ua)) return "Motorola";
+      if (/tecno/.test(ua)) return "Tecno";
+      if (/infinix/.test(ua)) return "Infinix";
+      if (/itel/.test(ua)) return "Itel";
+      if (/lenovo/.test(ua)) return "Lenovo";
+      if (/nokia/.test(ua)) return "Nokia";
+      return "Android (Unknown Brand)";
+    }
+
+    // Windows
     if (/windows nt 11/.test(ua)) return "Windows 11 PC";
     if (/windows nt 10/.test(ua)) return "Windows 10 PC";
     if (/windows nt 6\.1/.test(ua)) return "Windows 7 PC";
     if (/windows/.test(ua)) return "Windows PC";
 
-    // Linux
+    // Linux (only if it's not Android)
     if (/ubuntu/.test(ua)) return "Ubuntu Linux";
     if (/linux/.test(ua)) return "Linux Machine";
 
-    // Fallbacks
-    if (/android/.test(ua)) return "Android (Unknown Brand)";
     return "Unknown Device";
   }
 
